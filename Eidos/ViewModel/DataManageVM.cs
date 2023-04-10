@@ -38,34 +38,13 @@ namespace TheBank2.ViewModel
         public static Position<int> UserPosition { get; set; }
         #endregion
 
-        #region СВОЙСТВА ДЛЯ КЛИЕНТА
-        public static string ClientName { get; set; }
-        public static string ClientSurName { get; set; }
-        public static string ClientPhone { get; set; }
-        public static DateTime ClientDateOfBirth { get; set; }
-        public static bool ClientIsVIP { get; set; }
-        #endregion
-
-        #region СВОЙСТВА ДЛЯ ДЕПОЗИТА
-        public static Client<int> DepositClient { get; set; }
-        public static double DepositPercent { get; set; }
-        public static int DepositStartSum { get; set; }
-        public static bool DepositIsCapitalized { get; set; }
-        public static User<int> DepositResponsibleEmployee { get; set; }
-        public static DateTime DepositDateOfStart { get; set; }
-        public static int DepositMonthsCount { get; set; }
-        public static Deposit<int> DestinationDeposit { get; set; }
-        public static int DepositSumToTransfer { get; set; }
-        #endregion
-
         #region СВОЙСТВА ДЛЯ ВЫДЕЛЕННЫХ ЭЛЕМЕНТОВ
 
         public TabItem SelectedTabItem { get; set; }
         public static Position<int> SelectedPosition { get; set; }
         public static User<int> SelectedUser { get; set; }
         public static Department<int> SelectedDepartment { get; set; }
-        public static Client<int> SelectedClient { get; set; }
-        public static Deposit<int> SelectedDeposit { get; set; }
+
         #endregion
 
         /// <summary>
@@ -107,34 +86,6 @@ namespace TheBank2.ViewModel
             {
                 allUsers = value;
                 NotifyPropertyChanged(nameof(AllUsers));
-            }
-        }
-
-        /// <summary>
-        /// все клиенты
-        /// </summary>
-        private List<Client<int>> allClients = DataWorker.GetAllClients();
-        public List<Client<int>> AllClients
-        {
-            get => allClients;
-            set
-            {
-                allClients = value;
-                NotifyPropertyChanged(nameof(AllClients));
-            }
-        }
-
-        /// <summary>
-        /// все депозиты
-        /// </summary>
-        private List<Deposit<int>> allDeposits = DataWorker.GetAllDeposits();
-        public List<Deposit<int>> AllDeposits
-        {
-            get => allDeposits;
-            set
-            {
-                allDeposits = value;
-                NotifyPropertyChanged(nameof(AllDeposits));
             }
         }
 
@@ -182,33 +133,6 @@ namespace TheBank2.ViewModel
         }
 
         /// <summary>
-        /// Открытие окна добавления клиента
-        /// </summary>
-        private static void OpenAddClientWindowMethod()
-        {
-            AddNewClientWindow newClientWindow = new();
-            SetCenterPositionAndOpen(newClientWindow);
-        }
-
-        /// <summary>
-        /// Открытие окна добавления депозита
-        /// </summary>
-        private static void OpenAddDepositWindowMethod()
-        {
-            AddNewDepositWindow newDepositWindow = new();
-            SetCenterPositionAndOpen(newDepositWindow);
-        }
-
-        /// <summary>
-        /// Открытие окна создания перевода
-        /// </summary>
-        private static void OpenTransferDepositWindowMethod()
-        {
-            TransferDepositWindow newTransferDepositWindow = new();
-            SetCenterPositionAndOpen(newTransferDepositWindow);
-        }
-
-        /// <summary>
         /// Открывает окно в центре предыдущего окна
         /// </summary>
         /// <param name="window"></param>
@@ -249,23 +173,6 @@ namespace TheBank2.ViewModel
             SetCenterPositionAndOpen(editUserWindow);
         }
 
-        /// <summary>
-        /// Открытие окна редактирования клиента
-        /// </summary>
-        private static void OpenEditClientWindowMethod(Client<int> client)
-        {
-            EditClientWindow editClientWindow = new(client);
-            SetCenterPositionAndOpen(editClientWindow);
-        }
-
-        /// <summary>
-        /// Открытие окна редактирования депозита
-        /// </summary>
-        private static void OpenEditDepositWindowMethod(Deposit<int> deposit)
-        {
-            EditDepositWindow editDepositWindow = new(deposit);
-            SetCenterPositionAndOpen(editDepositWindow);
-        }
         #endregion
 
         #region КОМАНДЫ ОТКРЫТИЯ ОКОН СОЗДАНИЯ
@@ -318,86 +225,11 @@ namespace TheBank2.ViewModel
             }
         }
 
-        /// <summary>
-        /// Команда открытия окна для создания нового клиента
-        /// </summary>
-        private readonly RelayCommand openAddNewClientWnd;
-        public RelayCommand OpenAddNewClientWnd
-        {
-            get
-            {
-                return openAddNewClientWnd ?? new RelayCommand(obj =>
-                {
-                    OpenAddClientWindowMethod();
-                }
-                    );
-            }
-        }
-
-        /// <summary>
-        /// Команда открытия окна для создания нового депозита
-        /// </summary>
-        private readonly RelayCommand openAddNewDepositWnd;
-        public RelayCommand OpenAddNewDepositWnd
-        {
-            get
-            {
-                return openAddNewDepositWnd ?? new RelayCommand(obj =>
-                {
-                    OpenAddDepositWindowMethod();
-                }
-                    );
-            }
-        }
-
-        private readonly RelayCommand openTransferDepositWnd;
-        public RelayCommand OpenTransferDepositWnd
-        {
-            get
-            {
-                return openTransferDepositWnd ?? new RelayCommand(obj =>
-                {
-                    OpenTransferDepositWindowMethod();
-                }
-                    );
-            }
-        }
+        
 
         #endregion
 
         #region КОМАНДЫ ДОБАВЛЕНИЯ
-
-
-        /// <summary>
-        /// Добавление 1к клиентов
-        /// </summary>
-        private readonly RelayCommand createClients;
-
-        public RelayCommand CreateClients
-        {
-            get
-            {
-                return createClients ?? new RelayCommand(obj =>
-                {
-
-                    //CreateTestClients();
-
-                    //
-                    Thread thread = new(new ThreadStart(CreateTestClients));
-                    thread.Start();
-
-                    //Dispatcher dispatcher = new Dispatcher.(new ThreadStart(delegate { new DataManageVM().CreateTestClients(); }));
-
-                    //засовываем в таск общий метод, включающий обновление данных
-                    //var a = new Action(CreateTestClients);
-                    //var task = new Task(a);
-                    //task.Start();
-
-                    //CreateTestClients().Start();
-                });
-            }
-        }
-
         
 
         /// <summary>
@@ -529,110 +361,6 @@ namespace TheBank2.ViewModel
             }
         }
 
-        /// <summary>
-        /// Добавление клиента
-        /// </summary>
-        private RelayCommand addNewClient;
-        public RelayCommand AddNewClient
-        {
-            get
-            {
-                return addNewClient ?? new RelayCommand(obj =>
-                {
-                    Window wnd = obj as Window;
-                    string resultStr = "";
-                    if (ClientName == null || ClientName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "NameBlock");
-                    }
-                    if (ClientSurName == null || ClientSurName.Replace(" ", "").Length == 0)
-                    {
-                        SetRedBlockControl(wnd, "SurNameBlock");
-                    }
-                    if (ClientPhone == null)
-                    {
-                        SetRedBlockControl(wnd, "PhoneBlock");
-                    }
-                    if (ClientDateOfBirth == DateTime.MinValue)
-                    {
-                        SetRedBlockControl(wnd, "DateOfBirthDP");
-                    }
-                    else
-                    {
-                        RadioButton rdbtn = wnd.FindName("YesVIP") as RadioButton;
-                        if (rdbtn.IsChecked == true)
-                        {
-                            ClientIsVIP = true;
-                        }
-                        resultStr = DataWorker.CreateClient(ClientName, ClientSurName, ClientPhone, ClientIsVIP, ClientDateOfBirth);
-                        UpdateAllDataView();
-                        ShowMessageToUser(resultStr);
-                        SetNullValuesToProperties();
-                        wnd.Close();
-                    }
-                }
-                );
-            }
-        }
-
-        /// <summary>
-        /// Добавление депозита
-        /// </summary>
-        private readonly RelayCommand addNewDeposit;
-        public RelayCommand AddNewDeposit
-        {
-            get
-            {
-                return addNewDeposit ?? new RelayCommand(obj =>
-                {
-                    //Подписываемся на событие
-                    DataWorker.Notify += ShowMessageToUser;
-                    DataWorker.Notify += WriteToLog;
-                    Window wnd = obj as Window;
-                    string resultStr = "";
-                    if (DepositClient == null)
-                    {
-                        MessageBox.Show("Укажите клиента");
-                    }
-                    if (DepositPercent == 0)
-                    {
-                        SetRedBlockControl(wnd, "PercentBlock");
-                    }
-                    if (DepositStartSum == 0)
-                    {
-                        SetRedBlockControl(wnd, "StartSumBlock");
-                    }
-                    RadioButton rdtn = wnd.FindName("YesCapitalized") as RadioButton;
-                    if (rdtn.IsChecked == true)
-                    {
-                        DepositIsCapitalized = true;
-                    }
-                    if (DepositResponsibleEmployee == null)
-                    {
-                        MessageBox.Show("Укажите ответственного");
-                    }
-                    if (DepositDateOfStart == DateTime.MinValue)
-                    {
-                        SetRedBlockControl(wnd, "DateOfStartDP");
-                    }
-                    if (DepositMonthsCount == 0)
-                    {
-                        SetRedBlockControl(wnd, "MonthsCountBlock");
-                    }
-                    else
-                    {
-                        DataWorker.CreateDeposit(DepositClient, DepositPercent, DepositStartSum, DepositIsCapitalized,
-                            DepositDateOfStart, DepositMonthsCount, DepositResponsibleEmployee);
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        wnd.Close();
-                    }
-                }
-                );
-            }
-        }
-
-
         #endregion
 
         #region КОМАНДЫ ОТКРЫТИЯ ОКОН ДЛЯ РЕДАКТИРОВАНИЯ
@@ -659,16 +387,6 @@ namespace TheBank2.ViewModel
                     if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
                     {
                         OpenEditDepartmentWindowMethod(SelectedDepartment);
-                    }
-                    //если клиент
-                    if (SelectedTabItem.Name == "ClientsTab" && SelectedClient != null)
-                    {
-                        OpenEditClientWindowMethod(SelectedClient);
-                    }
-                    //если депозит
-                    if (SelectedTabItem.Name == "DepositsTab" && SelectedDeposit != null)
-                    {
-                        OpenEditDepositWindowMethod(SelectedDeposit);
                     }
                 });
             }
@@ -762,125 +480,11 @@ namespace TheBank2.ViewModel
             }
         }
 
-        /// <summary>
-        /// Команда редактирования клиента
-        /// </summary>
-        private RelayCommand editClient;
-        public RelayCommand EditClient
-        {
-            get
-            {
-                return editClient ?? new RelayCommand(obj =>
-                {
-                    Window window = obj as Window;
-                    string resultStr = "Не выбран клиент";
-                    if (SelectedClient != null)
-                    {
-                        RadioButton rdbtn = window.FindName("YesVIP") as RadioButton;
-                        if (rdbtn.IsChecked == true)
-                        {
-                            ClientIsVIP = true;
-                        }
-                        else ClientIsVIP = false;
-                        resultStr = DataWorker.EditClient(SelectedClient, ClientName, ClientSurName, ClientPhone, ClientIsVIP, ClientDateOfBirth);
-                        UpdateAllDataView();
-                        SetNullValuesToProperties();
-                        ShowMessageToUser(resultStr);
-                        window.Close();
-                    }
-                    else ShowMessageToUser(resultStr);
-                });
-            }
-        }
-
-        /// <summary>
-        /// Команда редактирования депозита
-        /// </summary>
-        private RelayCommand editDeposit;
-        public RelayCommand EditDeposit
-        {
-            get
-            {
-                return editDeposit ?? new RelayCommand(obj =>
-                {
-                    //Подписываемся на событие
-                    DataWorker.Notify += ShowMessageToUser;
-                    DataWorker.Notify += WriteToLog;
-                    Window window = obj as Window;
-                    string resultStr = "Не выбран депозит";
-                    string noClientStr = "Не выбран новый клиент или ответственный сотрудник";
-                    if (SelectedDeposit != null)
-                    {
-                        if (DepositClient != null && DepositResponsibleEmployee !=null)
-                        {
-                            DataWorker.EditDeposit(SelectedDeposit,DepositClient,DepositPercent,
-                                DepositStartSum,DepositIsCapitalized,DepositDateOfStart,DepositMonthsCount,DepositResponsibleEmployee);
-                            UpdateAllDataView();
-                            SetNullValuesToProperties();
-                            //ShowMessageToUser(resultStr);
-                            window.Close();
-                        }
-                        else ShowMessageToUser(noClientStr);
-                    }
-                    else ShowMessageToUser(resultStr);
-                });
-            }
-        }
+       
         #endregion
 
-        #region КОМАНДЫ ПЕРЕВОДА ДЕПОЗИТОВ
-
-        private RelayCommand transferDeposit;
-        public RelayCommand TransferDeposit
-        {
-            get
-            {
-                return transferDeposit ?? new RelayCommand(obj =>
-                {
-                    //Подписываемся на событие
-                    DataWorker.Notify += ShowMessageToUser;
-                    DataWorker.Notify += WriteToLog;
-                    Window window = obj as Window;
-                    string resultStr = "Не выбран депозит";
-                    string noSumToTransfer = "Не выбрана сумма перевода или счет перевода";
-                    if (SelectedDeposit != null)
-                    {
-                        if (DestinationDeposit != null && DepositSumToTransfer > 0)
-                        {
-                            DataWorker.TransferDeposit(SelectedDeposit.Id, DestinationDeposit.Id, DepositSumToTransfer);
-                            UpdateAllDataView();
-                            SetNullValuesToProperties();
-                            //ShowMessageToUser(resultStr);
-                            window.Close();
-                        }
-                        else ShowMessageToUser(noSumToTransfer);
-                    }
-                    else ShowMessageToUser(resultStr);
-                });
-            }
-        }
-        #endregion
 
         #region КОМАНДЫ УДАЛЕНИЯ
-
-        /// <summary>
-        /// удалить тестовых клиентов
-        /// </summary>
-        private readonly RelayCommand deleteClients;
-
-        public RelayCommand DeleteClients
-        {
-            get
-            {
-                return deleteClients ?? new RelayCommand(obj =>
-                {
-                    //DeleteTestClients().Start();
-                    var a = new Action(DeleteTestClients);
-                    var task = new Task(a);
-                    task.Start();
-                });
-            }
-        }
 
         private RelayCommand deleteItem;
         public RelayCommand DeleteItem
@@ -906,21 +510,6 @@ namespace TheBank2.ViewModel
                     if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
                     {
                         resultStr = DataWorker.DeleteDepartment(SelectedDepartment);
-                        UpdateAllDataView();
-                    }
-                    //если клиент
-                    if (SelectedTabItem.Name == "ClientsTab" && SelectedClient != null)
-                    {
-                        resultStr = DataWorker.DeleteClient(SelectedClient);
-                        UpdateAllDataView();
-                    }
-                    //если депозит
-                    if (SelectedTabItem.Name == "DepositsTab" && SelectedDeposit != null)
-                    {
-                        //Подписываемся на события
-                        DataWorker.Notify += ShowMessageToUser;
-                        DataWorker.Notify += WriteToLog;
-                        DataWorker.DeleteDeposit(SelectedDeposit);
                         UpdateAllDataView();
                     }
                     //обновление
@@ -960,26 +549,6 @@ namespace TheBank2.ViewModel
                 MessageView messageView = new(e.Message);
             }
         }
-
-        /// <summary>
-        /// Task для асинхронного добавления данных
-        /// </summary>
-        public void CreateTestClients()
-        {
-            DataWorker.CreateTestClients();
-            UpdateAllDataView();
-            SetNullValuesToProperties();
-            ShowMessageToUser("Добавлено");
-        }
-
-        public void DeleteTestClients()
-        {
-            DataWorker.DeleteTestClients();
-            UpdateAllDataView();
-            SetNullValuesToProperties();
-            ShowMessageToUser("Удаление завершено");
-        }
-
         #endregion
 
         #region UPDATE VIEWS
@@ -1005,30 +574,12 @@ namespace TheBank2.ViewModel
             PositionDepartment = null;
             //для отдела
             DepartmentName = null;
-            //для клиента
-            ClientName = null;
-            ClientSurName = null;
-            UserPhone = null;
-            ClientIsVIP = false;
-            UserDateOfBirth = DateTime.MinValue;
-            //для депозита
-            DepositClient = null;
-            DepositPercent = 0;
-            DepositStartSum = 0;
-            DepositIsCapitalized = false;
-            DepositDateOfStart = DateTime.MinValue;
-            DepositMonthsCount = 0;
-            DepositResponsibleEmployee = null;
-            DepositSumToTransfer = 0;
-            DestinationDeposit = null;
         }
         private async void UpdateAllDataView()
         {
             UpdateAllDepartmentsView();
             UpdateAllPositionsView();
             UpdateAllUsersView();
-            UpdateAllClientsView();
-            UpdateAllDepositsView();
         }
 
         private void UpdateAllDepartmentsView()
@@ -1057,25 +608,7 @@ namespace TheBank2.ViewModel
             MainWindow.AllUsersView.Items.Clear();
             MainWindow.AllUsersView.ItemsSource = AllUsers;
             MainWindow.AllUsersView.Items.Refresh();
-        }
-
-        private void UpdateAllClientsView()
-        {
-            AllClients = DataWorker.GetAllClients();
-            MainWindow.AllClientsView.ItemsSource = null;
-            MainWindow.AllClientsView.Items.Clear();
-            MainWindow.AllClientsView.ItemsSource = AllClients;
-            MainWindow.AllClientsView.Items.Refresh();
-        }
-
-        private void UpdateAllDepositsView()
-        {
-            AllDeposits = DataWorker.GetAllDeposits();
-            MainWindow.AllDepositsView.ItemsSource = null;
-            MainWindow.AllDepositsView.Items.Clear();
-            MainWindow.AllDepositsView.ItemsSource = AllDeposits;
-            MainWindow.AllDepositsView.Items.Refresh();
-        }
+        } 
         #endregion
 
     }

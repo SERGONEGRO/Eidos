@@ -12,48 +12,7 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <TabControl Name="TabCntrl"  Grid.Row="0" SelectedItem="{Binding SelectedTabItem}" Width="auto">
-            <!-- вкладка вклады -->
-            <TabItem Name="DepositsTab" Tag="Depos">
-                <TabItem.Header>
-                    <TextBlock Text="Deposits" FontFamily="Century Gothic" FontWeight="Bold"/>
-                </TabItem.Header>
-                <TabItem.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Редактировать" Command="{Binding OpenEditItemWnd}"/>
-                        <MenuItem Header="Удалить" Command="{Binding DeleteItem}"/>
-                        <MenuItem Header="Сделать перевод с этого счёта" Command="{Binding OpenTransferDepositWnd}"/>
-                    </ContextMenu>
-                </TabItem.ContextMenu>
-                <ListView x:Name="ViewAllDeposits" ItemsSource="{Binding AllDeposits}"
-                          SelectedItem="{Binding SelectedDeposit}" Background="#FFE8DDDD">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="ID" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=Id}"/>
-                            <GridViewColumn Header="Client" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=DepositClient.FullName}"/>
-                            <GridViewColumn Header="%" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=DepositPercent}"/>
-                            <GridViewColumn Header="StartSum" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=StartSum}"/>
-                            <GridViewColumn Header="IsCapitalized" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=IsCapitalized}"/>
-                            <GridViewColumn Header="CurrentSum" Width="auto"
-                                            DisplayMemberBinding="{Binding StringFormat=\{0:n2\},Path=CurrentSum}"/>
-                            <GridViewColumn Header="StartDate" Width="auto"
-                                            DisplayMemberBinding="{Binding StringFormat=d,Path=DateOfStart}"/>
-                            <GridViewColumn Header="Duration" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=MonthsCount}"/>
-                            <GridViewColumn Header="EndDate" Width="auto"
-                                            DisplayMemberBinding="{Binding StringFormat=d,Path=DateOfEnd}"/>
-                            <GridViewColumn Header="EndSum" Width="auto"
-                                            DisplayMemberBinding="{Binding StringFormat=\{0:n2\},Path=EndSum}"/>
-                            <GridViewColumn Header="Responsible" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=DepositUser.FullName}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </TabItem>
+           
             <!-- вкладка сотрудники -->
             <TabItem Name="UsersTab" Tag="Usrs">
                 <TabItem.Header>
@@ -139,55 +98,10 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
-            <!-- вкладка клиенты -->
-            <TabItem Name="ClientsTab"  Tag="Clnts">
-                <TabItem.Header>
-                    <TextBlock Text="Clients" FontFamily="Century Gothic" FontWeight="Bold"/>
-                </TabItem.Header>
-                <TabItem.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Редактировать" Command="{Binding OpenEditItemWnd}"/>
-                        <MenuItem Header="Удалить" Command="{Binding DeleteItem}"/>
-                    </ContextMenu>
-                </TabItem.ContextMenu>
-                <ListView x:Name="ViewAllClients" ItemsSource="{Binding AllClients}"
-                          SelectedItem="{Binding SelectedClient}" Background="#FFE8DDDD">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="ID" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=Id}"/>
-                            <GridViewColumn Header="Name" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=FullName}"/>
-                            <GridViewColumn Header="Phone" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=Phone}"/>
-                            <GridViewColumn Header="VipStatus" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=IsVIP}"/>
-                            <GridViewColumn Header="Age" Width="auto"
-                                            DisplayMemberBinding="{Binding Path=Age}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </TabItem>
+           
             <!--Кнопки -->
         </TabControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5,5,5,20">
-            <Button Content="Новый депозит" Command="{Binding OpenAddNewDepositWnd}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,10,0" Background="#FF3EDE8E" FontFamily="Century Gothic" FontSize="20" BorderThickness="1,1,1,1">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Setter Property="Button.Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=TabCntrl, Path=SelectedItem.Tag}" Value="Depos">
-                                <Setter Property="Button.Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
             <Button Content="Новый сотрудник" Command="{Binding OpenAddNewUserWnd}" Margin="10,0,10,0" Background="#FF3EDE8E" FontFamily="Century Gothic" FontSize="20">
                 <Button.Resources>
                     <Style TargetType="Border">
@@ -239,57 +153,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Content="Новый клиент" Command="{Binding OpenAddNewClientWnd}" Margin="10,0,10,0" Background="#FF3EDE8E" FontFamily="Century Gothic" FontSize="20">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Setter Property="Button.Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=TabCntrl, Path=SelectedItem.Tag}" Value="Clnts">
-                                <Setter Property="Button.Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Content="Добавить 1к клиентов" Command="{Binding CreateClients}" Margin="10,0,10,0" Background="#FF3EDE8E" FontFamily="Century Gothic" FontSize="20">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Setter Property="Button.Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=TabCntrl, Path=SelectedItem.Tag}" Value="Clnts">
-                                <Setter Property="Button.Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Content="Удалить тестовых клиентов" Command="{Binding DeleteClients}" Margin="10,0,10,0" Background="#FF3EDE8E" FontFamily="Century Gothic" FontSize="20">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Setter Property="Button.Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=TabCntrl, Path=SelectedItem.Tag}" Value="Clnts">
-                                <Setter Property="Button.Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
+            
         </StackPanel>
         <ProgressBar HorizontalAlignment="Center" Height="10" Margin="0,60,0,0" Grid.Row="1" VerticalAlignment="Top" Width="800" RenderTransformOrigin="0.5,0.5">
             <ProgressBar.RenderTransform>

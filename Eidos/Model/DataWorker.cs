@@ -46,27 +46,7 @@ namespace TheBank2.Model
             return result;
         }
 
-        /// <summary>
-        /// Получить всех клиентов
-        /// </summary>
-        /// <returns></returns>
-        public static List<Client<int>> GetAllClients()
-        {
-            using ApplicationContext db = new();
-            List<Client<int>> result = db.Clients.ToList();
-            return result;
-        }
-
-        /// <summary>
-        /// Получить все депозиты
-        /// </summary>
-        /// <returns></returns>
-        public static List<Deposit<int>> GetAllDeposits()
-        {
-            using ApplicationContext db = new();
-            List<Deposit<int>> result = db.Deposits.ToList();
-            return result;
-        }
+       
 
         /// <summary>
         /// Получение позиции по id
@@ -103,13 +83,6 @@ namespace TheBank2.Model
             return users;
         }
 
-        public static List<Client<int>> GetAllClientsByName(string name)
-        {
-            using ApplicationContext db = new();
-            List<Client<int>> clients = (from client in GetAllClients() where client.Name.StartsWith("test") select client).ToList();
-            //from client in GetAllClients() where client.Name.StartsWith("test") delete client;
-            return clients;
-        }
 
         /// <summary>
         /// Получение позиций по id департамента
@@ -135,17 +108,6 @@ namespace TheBank2.Model
             return user;
         }
 
-        /// <summary>
-        /// Получение клиента по id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Client<int> GetClientByClientId(int id)
-        {
-            using ApplicationContext db = new();
-            Client<int> client = db.Clients.FirstOrDefault(d => d.Id == id);
-            return client;
-        }
 
         #endregion
 
@@ -234,99 +196,6 @@ namespace TheBank2.Model
             return result;
         }
 
-        /// <summary>
-        /// Создать Клиента
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="surName"></param>
-        /// <param name="phone"></param>
-        /// <param name="isVip"></param>
-        /// <param name="dateOfBirth"></param>
-        /// <returns></returns>
-        public static string CreateClient(string name, string surName, string phone, bool isVip, DateTime dateOfBirth)
-        {
-            string result = "Уже существует";
-            using ApplicationContext db = new();
-            //проверяем, суще ли клиент
-            bool checkIsExist = db.Clients.Any(el => el.Name == name && el.SurName == surName);
-            if (!checkIsExist)
-            {
-                Client<int> newClient = new()
-                {
-                    Name = name,
-                    SurName = surName,
-                    Phone = phone,
-                    IsVIP = isVip,
-                    DateOfBirth = dateOfBirth
-                };
-                db.Clients.Add(newClient);
-                db.SaveChanges();
-                result = "Сделано!";
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Создать тестовых клиентов
-        /// </summary>
-        public static async void CreateTestClients()
-        {
-            using ApplicationContext db = new();
-            Random rand = new Random();
-            for (int i = 0; i < 1000; i++)
-            {
-                Client<int> newClient = new()
-                {
-                    Name = "test" + rand.Next(1000000),
-                    SurName = "test" + rand.Next(1000000),
-                    Phone = rand.Next(1000000).ToString(),
-                    IsVIP = true,
-                    DateOfBirth = DateTime.Now
-                };
-                bool checkIsExist = db.Clients.Any(el => el.Name == newClient.Name && el.SurName == newClient.SurName);
-                if (!checkIsExist)
-                {
-                    db.Clients.Add(newClient);
-                }
-                else
-                {
-                    i--;
-                }
-            }
-            db.SaveChanges();
-        }
-
-        /// <summary>
-        /// Создать депозит
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="depositPercent"></param>
-        /// <param name="startSum"></param>
-        /// <param name="isCapitalized"></param>
-        /// <param name="dateOfStart"></param>
-        /// <param name="monthsCount"></param>
-        /// <param name="responsibleEmployee"></param>
-        /// <returns></returns>
-        public static void CreateDeposit(Client<int> client, double depositPercent, int startSum, bool isCapitalized,
-            DateTime dateOfStart, int monthsCount, User<int> responsibleEmployee)
-        {
-            using ApplicationContext db = new();
-            //  НЕ проверяем, суще ли Депозит
-            Deposit<int> newDeposit = new()
-            {
-                ClientId = client.Id,
-                DepositPercent = depositPercent,
-                StartSum = startSum,
-                IsCapitalized = isCapitalized,
-                DateOfStart = dateOfStart,
-                MonthsCount = monthsCount,
-                ResponsibleEmployeeId = responsibleEmployee.Id
-            };
-            db.Deposits.Add(newDeposit);
-            db.SaveChanges();
-            //вызываем событие
-            Notify?.Invoke($"{newDeposit.DateOfStart} Создан депозит №{newDeposit.Id} на имя: {client.FullName} на сумму {newDeposit.StartSum}$.");
-        }
 
         #endregion
 
@@ -382,59 +251,6 @@ namespace TheBank2.Model
             return result;
         }
 
-        /// <summary>
-        /// удалить Клиента
-        /// </summary>
-        /// <param name="client"></param>
-        /// <returns></returns>
-        public static string DeleteClient(Client<int> client)
-        {
-            string result = "Такой позиции не существует";
-            using (ApplicationContext db = new())
-            {
-                db.Clients.Remove(client);
-                db.SaveChanges();
-                result = "Сделано! Клиент " + client.Name + "удален";
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Удалить клиентов тестовых
-        /// </summary>
-        public static void DeleteTestClients()
-        {
-            using ApplicationContext db = new();
-            foreach (Client<int> client in db.Clients)
-            {
-                if (client.Name.Length >=4)
-                {
-                    if (client.Name.Substring(0, 4) == "test")
-                    {
-                        db.Clients.Remove(client);
-                    }
-                }
-            }
-            //db.Clients.ToList().RemoveAll((x) => x.Name.Substring(0,4) == "test");
-            db.SaveChanges();
-        }
-
-        /// <summary>
-        /// удалить Депозит
-        /// </summary>
-        /// <param name="deposit"></param>
-        /// <returns></returns>
-        public static void DeleteDeposit(Deposit<int> deposit)
-        {
-            int id = deposit.Id;   //для лога
-            using (ApplicationContext db = new())
-            {
-                db.Deposits.Remove(deposit);
-                db.SaveChanges();
-            }
-            //вызываем событие
-            Notify?.Invoke($"{DateTime.Now} Депозит №{id} удален from dataworker ");
-        }
         #endregion
 
         #region МЕТОДЫ РЕДАКТИРОВАНИЯ
@@ -508,106 +324,6 @@ namespace TheBank2.Model
             return result;
         }
 
-        /// <summary>
-        /// Редактировать клиента
-        /// </summary>
-        /// <param name="oldClient"></param>
-        /// <param name="newName"></param>
-        /// <param name="newSurName"></param>
-        /// <param name="newPhone"></param>
-        /// <param name="newIsVip"></param>
-        /// <param name="newDateOfBirth"></param>
-        /// <returns></returns>
-        public static string EditClient(Client<int> oldClient, string newName, string newSurName, string newPhone, bool newIsVip, DateTime newDateOfBirth)
-        {
-            string result = "Такого клиента не существует";
-            using (ApplicationContext db = new())
-            {
-                Client<int> client = db.Clients.FirstOrDefault(p => p.Id == oldClient.Id);
-                if (client != null)
-                {
-                    client.Name = newName;
-                    client.SurName = newSurName;
-                    client.Phone = newPhone;
-                    client.IsVIP = newIsVip;
-                    client.DateOfBirth = newDateOfBirth;
-                    db.SaveChanges();
-                    result = "Сделано! Клиент " + client.Name + "Изменен";
-                }
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Редактировать депозит
-        /// </summary>
-        /// <param name="oldDeposit"></param>
-        /// <param name="newClient"></param>
-        /// <param name="newDepositPercent"></param>
-        /// <param name="newStartSum"></param>
-        /// <param name="newIsCapitalized"></param>
-        /// <param name="newDateOfStart"></param>
-        /// <param name="newMonthsCount"></param>
-        /// <param name="newResponsibleEmployee"></param>
-        /// <returns></returns>
-        public static void EditDeposit(Deposit<int> oldDeposit, Client<int> newClient, double newDepositPercent, int newStartSum, bool newIsCapitalized,
-            DateTime newDateOfStart, int newMonthsCount, User<int> newResponsibleEmployee)
-        {
-            string result = "Такого Депозита не существует";
-            using (ApplicationContext db = new())
-            {
-                Deposit<int> deposit = db.Deposits.FirstOrDefault(p => p.Id == oldDeposit.Id);
-                int id = deposit.Id;            //для лога
-                if (deposit != null)
-                {
-                    deposit.Client = newClient;
-                    deposit.DepositPercent = newDepositPercent;
-                    deposit.StartSum = newStartSum;
-                    deposit.IsCapitalized = newIsCapitalized;
-                    deposit.DateOfStart = newDateOfStart;
-                    deposit.MonthsCount = newMonthsCount;
-                    deposit.ResponsibleEmployee  = newResponsibleEmployee;
-                    db.SaveChanges();
-                    result = "Сделано! Депозит " + deposit.Id + "Изменен";
-                }
-                //вызываем событие
-                Notify?.Invoke($"{DateTime.Now} Депозит №{id} отредактирован.");
-            }
-            
-        }
         #endregion
-
-        #region МЕТОД ПЕРЕВОДА ДЕПОЗИТА
-        /// <summary>
-        /// Переводит депозит
-        /// </summary>
-        /// <param name="sourceDepositId"></param>
-        /// <param name="destinationDepositId"></param>
-        /// <param name="depositSumToTransfer"></param>
-        /// <returns></returns>
-        internal static void TransferDeposit(int sourceDepositId, int destinationDepositId, int depositSumToTransfer)
-        {
-            using ApplicationContext db = new();
-            Deposit<int> sourceDeposit = db.Deposits.FirstOrDefault(p => p.Id == sourceDepositId);
-            Deposit<int> destinationDeposit = db.Deposits.FirstOrDefault(p => p.Id == destinationDepositId);
-            int sourceId = sourceDeposit.Id;            //для лога
-            int destinationID = destinationDeposit.Id;  //для лога
-            if (DepositTransfer.CheckDepositForMoneyAmount(sourceDeposit.CurrentSum, depositSumToTransfer))
-            {
-                sourceDeposit.DepositRecalculation(-depositSumToTransfer);
-                destinationDeposit.DepositRecalculation(depositSumToTransfer);
-                db.SaveChanges();
-                //вызываем событие
-                Notify?.Invoke($"{DateTime.Now} Совершен перевод со счёта №{sourceId} на счёт № {destinationID} на сумму {depositSumToTransfer}$.");
-            }
-            else
-            {
-                //вызываем событие
-                Notify?.Invoke($"{DateTime.Now} Перевод со счёта №{sourceId} на счёт № {destinationID} на сумму {depositSumToTransfer}$ не совершен!");
-            }
-        }
-
-        #endregion 
-
     }
 }

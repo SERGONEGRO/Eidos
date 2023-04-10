@@ -12,8 +12,6 @@ namespace TheBank2.View
         public static ListView AllDepartmentsView;
         public static ListView AllPositionsView;
         public static ListView AllUsersView;
-        public static ListView AllClientsView;
-        public static ListView AllDepositsView;
         
         public MainWindow()
         {
@@ -22,8 +20,6 @@ namespace TheBank2.View
             AllDepartmentsView = ViewAllDepartments;
             AllPositionsView = ViewAllPositions;
             AllUsersView = ViewAllUsers;
-            AllClientsView = ViewAllClients;
-            AllDepositsView = ViewAllDeposits;
         }
 
        

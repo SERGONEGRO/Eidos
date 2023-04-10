@@ -9,8 +9,6 @@ namespace TheBank2.Data
         public DbSet<User<int>> Users { get; set; }
         public DbSet<Department<int>> Departments { get; set; }
         public DbSet<Position<int>> Positions { get; set; }
-        public DbSet<Client<int>> Clients { get; set; }
-        public DbSet<Deposit<int>> Deposits { get; set; }
 
         /// <summary>
         /// конструктор
