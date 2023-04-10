@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eidos", "Eidos\Eidos.csproj", "{B0AB7527-018F-4F12-BC90-FA4FA14323FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBank2", "Eidos\TheBank2.csproj", "{B0AB7527-018F-4F12-BC90-FA4FA14323FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyLib", "MyLib\MyLib.csproj", "{94DDA986-C818-40E3-B932-DDE277F1458E}"
 EndProject
