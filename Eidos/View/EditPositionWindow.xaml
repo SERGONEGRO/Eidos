@@ -1,0 +1,34 @@
+﻿<Window x:Class="TheBank2.View.EditPositionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TheBank2.View"
+        mc:Ignorable="d"
+        Title="EditNewPositionWindow" Height="300" Width="300"
+        Name="EditPositionWnd">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical"
+                    HorizontalAlignment ="Center"
+                    VerticalAlignment="Center"
+                    Width="200">
+            <TextBlock Text="New Name"/>
+            <TextBox Text="{Binding PositionName}"/>
+            <TextBlock Text="New Salary"/>
+            <TextBox PreviewTextInput="PreviewTextInput" Text="{Binding PositionSalary}"/>
+            <TextBlock Text="New Max of vacancies"/>
+            <TextBox PreviewTextInput="PreviewTextInput" Text="{Binding PositionMaxNumber}"/>
+            <TextBlock Text="Department"/>
+            <ComboBox ItemsSource="{Binding AllDepartments}"
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding PositionDepartment}"/>
+        </StackPanel>
+        <Button Grid.Row="1" Content="Edit Position"
+                Command="{Binding EditPosition}"
+                CommandParameter="{Binding ElementName=EditPositionWnd}"/>
+    </Grid>
+</Window>

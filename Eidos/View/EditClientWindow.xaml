@@ -1,0 +1,35 @@
+﻿<Window x:Class="TheBank2.View.EditClientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TheBank2.View"
+        mc:Ignorable="d"
+        Title="EditNewClientWindow" Height="500" Width="300"
+        Name="EditClientWnd">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical"
+                    HorizontalAlignment ="Center"
+                    VerticalAlignment="Center"
+                    Width="200">
+            <TextBlock Text="New Name"/>
+            <TextBox Text="{Binding ClientName}"/>
+            <TextBlock Text="New SurName"/>
+            <TextBox Text="{Binding ClientSurName}"/>
+            <TextBlock Text="Phone"/>
+            <TextBox Name="PhoneBlock" PreviewTextInput="PreviewTextInput" Text="{Binding ClientPhone}"/>
+            <TextBlock Text="New Date of Birth"/>
+            <DatePicker SelectedDate="{Binding ClientDateOfBirth}"/>
+            <TextBlock Text="VIP?"/>
+            <RadioButton Name ="YesVIP" Content="Да"/>
+            <RadioButton Content="Нет"/>
+        </StackPanel>
+        <Button Grid.Row="1" Content="Edit Client"
+                Command="{Binding EditClient}"
+                CommandParameter="{Binding ElementName=EditClientWnd}"/>
+    </Grid>
+</Window>

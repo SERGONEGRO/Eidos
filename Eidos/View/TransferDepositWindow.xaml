@@ -1,0 +1,30 @@
+﻿<Window x:Class="TheBank2.View.TransferDepositWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TheBank2.View"
+        mc:Ignorable="d"
+        Title="TransferDepositWindow" Height="300" Width="300"
+        Name="TransferDepositWnd">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical"
+                    HorizontalAlignment ="Center"
+                    VerticalAlignment="Center"
+                    Width="200">
+            <TextBlock Text="Выберите депозит для перевода:"/>
+            <ComboBox ItemsSource="{Binding AllDeposits}"
+                      DisplayMemberPath="Id"
+                      SelectedItem="{Binding DestinationDeposit}"/>
+            <TextBlock Text="Выберите сумму перевода:"/>
+            <TextBox PreviewTextInput="PreviewTextInput" Text="{Binding DepositSumToTransfer}"/>
+        </StackPanel>
+        <Button Grid.Row="1" Content="Сделать перевод"
+                Command="{Binding TransferDeposit}"
+                CommandParameter="{Binding ElementName=TransferDepositWnd}"/>
+    </Grid>
+</Window>
