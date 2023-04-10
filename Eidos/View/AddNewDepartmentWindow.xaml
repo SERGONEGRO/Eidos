@@ -1,11 +1,10 @@
-﻿<Window x:Class="TheBank2.View.AddNewDepartmentWindow"
+﻿<Window x:Class="Eidos.View.AddNewDepartmentWindow"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:TheBank2.View"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      xmlns:local="clr-namespace:Eidos.View"
+      mc:Ignorable="d"  Height="300" Width="300"
       Title="AddNewDepartmentWindow" Name="AddNewDepartmentWnd"
       Background="#FF3D9B9B">
 
@@ -20,6 +19,8 @@
                     Width="200">
             <TextBlock  Text="Name"/>
             <TextBox Name="NameBlock" Text="{Binding DepartmentName}"/>
+            <TextBlock  Text="Address"/>
+            <TextBox Name="AddressBlock" Text="{Binding DepartmentAddress}"/>
         </StackPanel>
         <Button Grid.Row="1" Content="Add Department" Command="{Binding AddNewDepartment}"
                 CommandParameter="{Binding ElementName=AddNewDepartmentWnd}"/>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using MyLib;
 
-namespace TheBank2.Model
+namespace Eidos.Model
 {
     public class User<T> : Person
     {

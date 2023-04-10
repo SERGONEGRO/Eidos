@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TheBank2.Model;
-using MyLib;
+using Eidos.Model;
 
-namespace TheBank2.Data
+namespace Eidos.Data
 {
     internal class ApplicationContext : DbContext
     {

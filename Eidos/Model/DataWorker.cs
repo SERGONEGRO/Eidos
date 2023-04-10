@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheBank2.Data;
-using MyLib;
+using Eidos.Data;
 
-namespace TheBank2.Model
+namespace Eidos.Model
 {
     internal class DataWorker
     {
-        public delegate void DepositHandler(string message);
-        public static event DepositHandler Notify;
-
         #region МЕТОДЫ, ВОЗВРАЩАЮЩИЕ ЗНАЧЕНИЯ
 
         /// <summary>
@@ -72,7 +68,7 @@ namespace TheBank2.Model
             return dep;
         }
         /// <summary>
-        /// Получение пользователей по id позиции
+        /// Получение юзеров по id позиции
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -82,7 +78,6 @@ namespace TheBank2.Model
             List<User<int>> users = (from user in GetAllUsers() where user.PositionId == Convert.ToInt32(id) select user).ToList();
             return users;
         }
-
 
         /// <summary>
         /// Получение позиций по id департамента
@@ -96,18 +91,6 @@ namespace TheBank2.Model
             return positions;
 
         }
-        /// <summary>
-        /// Поулчение ответственного сотрудника по id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static User<int> GetUserByResponsibleEmployeeId(int id)
-        {
-            using ApplicationContext db = new();
-            User<int> user = db.Users.FirstOrDefault(d => d.Id == id);
-            return user;
-        }
-
 
         #endregion
 
@@ -118,7 +101,7 @@ namespace TheBank2.Model
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static string CreateDepartment(string name)
+        public static string CreateDepartment(string name, string address)
         {
             string result = "Уже существует";
             using ApplicationContext db = new();
@@ -126,7 +109,7 @@ namespace TheBank2.Model
             bool checkIsExist = db.Departments.Any(el => el.Name == name);
             if (!checkIsExist)
             {
-                Department<int> newDepartment = new() { Name = name };
+                Department<int> newDepartment = new() { Name = name, Address = address};
                 db.Departments.Add(newDepartment);
                 db.SaveChanges();
                 result = "Сделано!";
@@ -154,7 +137,6 @@ namespace TheBank2.Model
                 {
                     Name = name,
                     Salary = salary,
-                    MaxNumber = maxnumber,
                     DepartmentId = department.Id
                 };
                 db.Positions.Add(newPosition);
@@ -259,13 +241,14 @@ namespace TheBank2.Model
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static string EditDepartment(Department<int> oldDepartment, string newName)
+        public static string EditDepartment(Department<int> oldDepartment, string newName, string newAddress)
         {
             string result = "Такого отдела не существует";
             using (ApplicationContext db = new())
             {
                 Department<int> department = db.Departments.FirstOrDefault(d => d.Id == oldDepartment.Id);
                 department.Name = newName;
+                department.Address = newAddress;
                 db.SaveChanges();
                 result = "Сделано! Отдел " + department.Name + "изменен";
             }
@@ -286,7 +269,6 @@ namespace TheBank2.Model
                 Position<int> position = db.Positions.FirstOrDefault(p => p.Id == oldPosition.Id);
                 position.Name = newName;
                 position.Salary = newSalary;
-                position.MaxNumber = newMaxNumber;
                 position.Department = newDepartment;
                 db.SaveChanges();
                 result = "Сделано! Позиция " + position.Name + "Изменена";

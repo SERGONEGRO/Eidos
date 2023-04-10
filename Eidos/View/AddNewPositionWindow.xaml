@@ -1,9 +1,9 @@
-﻿<Window x:Class="TheBank2.View.AddNewPositionWindow"
+﻿<Window x:Class="Eidos.View.AddNewPositionWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TheBank2.View"
+        xmlns:local="clr-namespace:Eidos.View"
         mc:Ignorable="d"
         Title="AddNewPositionWindow" Height="300" Width="300"
         Name="AddNewPositionWnd">
@@ -20,10 +20,7 @@
             <TextBox Name="NameBlock" Text="{Binding PositionName}"/>
             <TextBlock Text="Salary"/>
             <TextBox Name="SalaryBlock"
-                     
                      Text="{Binding PositionSalary}"/>
-            <TextBlock Text="Max of vacancies"/>
-            <TextBox Name="MaxNumberBlock" Text="{Binding PositionMaxNumber}"/>
             <TextBlock Text="Department"/>
             <ComboBox ItemsSource="{Binding AllDepartments}"
                       DisplayMemberPath="Name"

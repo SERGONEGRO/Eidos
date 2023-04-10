@@ -1,5 +1,5 @@
-﻿using TheBank2.Model;
-using TheBank2.View;
+﻿using Eidos.Model;
+using Eidos.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,20 +7,23 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.IO;
+using System.Text.Json;
 using MyLib;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-namespace TheBank2.ViewModel
+namespace Eidos.ViewModel
 {
     internal class DataManageVM : INotifyPropertyChanged
     {
 
 
         #region СВОЙСТВА
+
         #region СВОЙСТВА ДЛЯ ДЕПАРТАМЕНТА
         public static string DepartmentName { get; set; }
+        public static string DepartmentAddress { get; set; }
         #endregion
 
         #region СВОЙСТВА ДЛЯ ПОЗИЦИИ
@@ -248,9 +251,13 @@ namespace TheBank2.ViewModel
                     {
                         SetRedBlockControl(wnd, "NameBlock");
                     }
+                    if (DepartmentAddress == null || DepartmentAddress.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControl(wnd, "AddressBlock");
+                    }
                     else
                     {
-                        resultStr = DataWorker.CreateDepartment(DepartmentName);
+                        resultStr = DataWorker.CreateDepartment(DepartmentName, DepartmentAddress);
                         UpdateAllDataView();
                         ShowMessageToUser(resultStr);
                         SetNullValuesToProperties();
@@ -284,11 +291,6 @@ namespace TheBank2.ViewModel
                         {
                             throw new MyException("Неправильно заполнено поле 'Зарплата'", 1);
                             //SetRedBlockControl(wnd, "SalaryBlock");
-                        }
-                        if (PositionMaxNumber <= 0)
-                        {
-                            throw new MyException("Неправильно заполнено поле 'Max number'", 2);
-                            //SetRedBlockControl(wnd, "MaxNumberBlock");
                         }
                         if (PositionDepartment == null)
                         {
@@ -469,7 +471,7 @@ namespace TheBank2.ViewModel
                     string resultStr = "Не выбран отдел";
                     if (SelectedDepartment != null)
                     {
-                        resultStr = DataWorker.EditDepartment(SelectedDepartment,DepartmentName);
+                        resultStr = DataWorker.EditDepartment(SelectedDepartment,DepartmentName,DepartmentAddress);
                         UpdateAllDataView();
                         SetNullValuesToProperties();
                         ShowMessageToUser(resultStr);
@@ -482,7 +484,6 @@ namespace TheBank2.ViewModel
 
        
         #endregion
-
 
         #region КОМАНДЫ УДАЛЕНИЯ
 
@@ -518,6 +519,33 @@ namespace TheBank2.ViewModel
                 }
                     );
             }
+        }
+        #endregion
+
+        #region ВЫГРУЗКА JSON
+
+        /// <summary>
+        /// Команда выгрузки департментов в JSON
+        /// </summary>
+        private readonly RelayCommand saveToJSON;
+        public RelayCommand SaveToJSON
+        {
+            get
+            {
+                return saveToJSON ?? new RelayCommand(obj =>
+                {
+                    saveToJSONMethod();
+                }
+                    );
+            }
+        }
+
+        /// <summary>
+        /// Открытие окна добавления позиции
+        /// </summary>
+        private static void saveToJSONMethod()
+        {
+            MessageBox.Show("Выгрузка завершена");
         }
         #endregion
 
@@ -558,9 +586,6 @@ namespace TheBank2.ViewModel
         /// </summary>
         private void SetNullValuesToProperties()
         {
-            //отписываемя от событий
-            DataWorker.Notify -= ShowMessageToUser;
-            DataWorker.Notify -= WriteToLog;
             //для пользователя
             UserName = null;
             UserSurName = null;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
-using TheBank2.ViewModel;
+using Eidos.ViewModel;
 
-namespace TheBank2.View
+namespace Eidos.View
 {
     /// <summary>
     /// Логика взаимодействия для AddNewPositionWindow.xaml

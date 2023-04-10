@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 using System.Windows;
-using TheBank2.Model;
-using TheBank2.ViewModel;
+using Eidos.Model;
+using Eidos.ViewModel;
 
-namespace TheBank2.View
+namespace Eidos.View
 {
     /// <summary>
     /// Логика взаимодействия для EditPositionWindow.xaml
@@ -16,7 +16,6 @@ namespace TheBank2.View
             DataContext = new DataManageVM();
             DataManageVM.SelectedPosition = positionToEdit;
             DataManageVM.PositionName = positionToEdit.Name;
-            DataManageVM.PositionMaxNumber = positionToEdit.MaxNumber;
             DataManageVM.PositionSalary = positionToEdit.Salary;
             DataManageVM.PositionDepartment = positionToEdit.PositionDepartment;
         }
